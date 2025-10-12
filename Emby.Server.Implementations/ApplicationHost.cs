@@ -15,6 +15,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Emby.Naming.Common;
 using Emby.Photos;
+using Emby.Server.Implementations.Anime;
 using Emby.Server.Implementations.Chapters;
 using Emby.Server.Implementations.Collections;
 using Emby.Server.Implementations.Configuration;
@@ -51,6 +52,7 @@ using MediaBrowser.Common.Net;
 using MediaBrowser.Common.Plugins;
 using MediaBrowser.Common.Updates;
 using MediaBrowser.Controller;
+using MediaBrowser.Controller.Anime;
 using MediaBrowser.Controller.Channels;
 using MediaBrowser.Controller.Chapters;
 using MediaBrowser.Controller.ClientEvent;
@@ -483,6 +485,8 @@ namespace Emby.Server.Implementations
             serviceCollection.AddSingleton<IShortcutHandler, MbLinkShortcutHandler>();
 
             serviceCollection.AddScoped<ISystemManager, SystemManager>();
+
+            serviceCollection.AddSingleton<IAnimeCatalogService, AnimeCatalogService>();
 
             serviceCollection.AddSingleton<TmdbClientManager>();
 
