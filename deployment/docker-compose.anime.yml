@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  jellyfin:
+    image: ${JELLYFIN_IMAGE}
+    container_name: jellyfin
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+      - JELLYFIN_PublishedServerUrl=${JELLYFIN_PUBLISHED_URL:-http://localhost:8096}
+      - ANIME_LIBRARY_PATH=/media/anime
+    volumes:
+      - ../config:/config
+      - ../cache:/cache
+      - ../data/anime:/media/anime:ro
+      - ../data/transcodes:/data/transcodes
+      - ../backups:/backups
+    ports:
+      - "8096:8096"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8096/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+volumes: {}
+
+networks:
+  default:
+    name: jellyfin-anime
