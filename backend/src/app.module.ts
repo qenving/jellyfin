@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD, APP_FILTER } from '@nestjs/core';
 import { PrismaModule } from './prisma/prisma.module';
+import { LoggerModule } from './logger/logger.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { JellyfinModule } from './jellyfin/jellyfin.module';
@@ -17,6 +18,7 @@ import { AllExceptionsFilter } from './common/filters/http-exception.filter';
       envFilePath: '.env',
     }),
     PrismaModule,
+    LoggerModule,
     AuthModule,
     UserModule,
     JellyfinModule,
