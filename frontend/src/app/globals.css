@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --anime-dark: #0a0a0a;
+  --anime-darker: #050505;
+  --anime-purple: #a855f7;
+  --anime-purple-light: #c084fc;
+  --anime-purple-dark: #7e22ce;
+  --anime-blue: #3b82f6;
+  --anime-pink: #ec4899;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-anime-darker text-white antialiased;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* Anime Hero Gradient Background */
+  .hero-gradient {
+    background: linear-gradient(
+      to bottom,
+      rgba(168, 85, 247, 0.15) 0%,
+      rgba(10, 10, 10, 0.9) 50%,
+      rgba(10, 10, 10, 1) 100%
+    );
+  }
+
+  /* Card Hover Effects */
+  .anime-card {
+    @apply relative overflow-hidden rounded-lg transition-all duration-300 ease-out;
+    @apply hover:scale-105 hover:shadow-2xl hover:shadow-anime-purple/20;
+  }
+
+  .anime-card::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent;
+    @apply opacity-0 transition-opacity duration-300;
+  }
+
+  .anime-card:hover::before {
+    @apply opacity-100;
+  }
+
+  /* Glassmorphism Effect */
+  .glass {
+    @apply bg-white/5 backdrop-blur-md border border-white/10;
+  }
+
+  /* Gradient Text */
+  .gradient-text {
+    @apply bg-gradient-anime bg-clip-text text-transparent;
+  }
+
+  /* Button Styles */
+  .btn-primary {
+    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300;
+    @apply bg-gradient-to-r from-anime-purple to-anime-pink;
+    @apply hover:shadow-lg hover:shadow-anime-purple/50;
+    @apply active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300;
+    @apply bg-white/10 border border-white/20;
+    @apply hover:bg-white/20 hover:border-white/30;
+    @apply active:scale-95;
+  }
+
+  /* Input Styles */
+  .input-anime {
+    @apply w-full px-4 py-3 rounded-lg;
+    @apply bg-white/5 border border-white/10;
+    @apply text-white placeholder-white/40;
+    @apply focus:outline-none focus:ring-2 focus:ring-anime-purple focus:border-transparent;
+    @apply transition-all duration-200;
+  }
+
+  /* Scrollbar Styling */
+  .custom-scrollbar::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-anime-dark;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-anime-purple/50 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-anime-purple;
+  }
+
+  /* Loading Spinner */
+  .spinner {
+    @apply inline-block w-8 h-8 border-4 border-anime-purple/20 border-t-anime-purple rounded-full;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Skeleton Loading */
+  .skeleton {
+    @apply bg-white/5 animate-pulse rounded;
+  }
+
+  /* Video Player Overlay */
+  .player-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent;
+    @apply opacity-0 hover:opacity-100 transition-opacity duration-300;
+  }
+
+  /* Badge */
+  .badge {
+    @apply px-3 py-1 rounded-full text-xs font-semibold;
+    @apply bg-anime-purple/20 text-anime-purple-light border border-anime-purple/30;
+  }
+
+  /* Progress Bar */
+  .progress-bar {
+    @apply h-1 bg-white/10 rounded-full overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply h-full bg-gradient-to-r from-anime-purple to-anime-pink transition-all duration-300;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+  }
+}

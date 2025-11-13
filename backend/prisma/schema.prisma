@@ -1,0 +1,108 @@
+// Prisma Schema for Jellyfin Anime Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  username  String   @unique
+  password  String
+
+  // Jellyfin integration
+  jellyfinUserId String @unique
+  jellyfinToken  String?
+
+  // User metadata
+  displayName    String?
+  avatarUrl      String?
+
+  // Status
+  isActive  Boolean @default(true)
+  isAdmin   Boolean @default(false)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lastLoginAt DateTime?
+
+  // Relations
+  watchlist    WatchlistItem[]
+  watchHistory WatchHistory[]
+  preferences  UserPreferences?
+
+  @@map("users")
+}
+
+model WatchlistItem {
+  id        String   @id @default(uuid())
+  userId    String
+  animeId   String   // Jellyfin Item ID
+
+  // Metadata cache (untuk performa)
+  animeTitle String
+  posterUrl  String?
+
+  addedAt   DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, animeId])
+  @@map("watchlist_items")
+}
+
+model WatchHistory {
+  id         String   @id @default(uuid())
+  userId     String
+  episodeId  String   // Jellyfin Episode ID
+  animeId    String   // Jellyfin Series ID
+
+  // Progress tracking
+  progressSeconds Int  @default(0)
+  durationSeconds Int  @default(0)
+  completed       Boolean @default(false)
+
+  // Metadata cache
+  animeTitle   String
+  episodeTitle String
+  seasonNumber Int?
+  episodeNumber Int?
+
+  // Timestamps
+  watchedAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, episodeId])
+  @@index([userId, animeId])
+  @@map("watch_history")
+}
+
+model UserPreferences {
+  id     String @id @default(uuid())
+  userId String @unique
+
+  // Player preferences
+  autoPlay       Boolean @default(true)
+  autoSkipIntro  Boolean @default(false)
+  defaultQuality String  @default("auto")
+  subtitleLang   String  @default("en")
+
+  // UI preferences
+  theme          String  @default("dark")
+  language       String  @default("en")
+
+  // Notification preferences
+  emailNotifications Boolean @default(true)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}
